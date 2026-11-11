@@ -2,35 +2,28 @@
 
 namespace App\Policies;
 
+use App\Models\Category;
 use App\Models\User;
 
 class CategoryPolicy
 {
-    public function before(User $user, string $ability): ?bool
-    {
-        if ($user->role === 'admin') {
-            return true;
-        }
-        return null;
-    }
-
     public function viewAny(User $user): bool
     {
-        return $user->isStaff();
+        return $user->hasPermission('categories.manage');
     }
 
     public function create(User $user): bool
     {
-        return $user->hasRole('editor');
+        return $user->hasPermission('categories.manage');
     }
 
-    public function update(User $user): bool
+    public function update(User $user, Category $category): bool
     {
-        return $user->hasRole('editor');
+        return $user->hasPermission('categories.manage');
     }
 
-    public function delete(User $user): bool
+    public function delete(User $user, Category $category): bool
     {
-        return $user->hasRole('editor');
+        return $user->hasPermission('categories.manage');
     }
 }

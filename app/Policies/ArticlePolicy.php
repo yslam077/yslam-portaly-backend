@@ -7,42 +7,30 @@ use App\Models\User;
 
 class ArticlePolicy
 {
-    public function before(User $user, string $ability): ?bool
-    {
-        if ($user->role === 'admin') {
-            return true;
-        }
-        return null;
-    }
-
     public function viewAny(User $user): bool
     {
-        return $user->isStaff();
+        return $user->hasPermission('articles.view');
     }
 
     public function create(User $user): bool
     {
-        return in_array($user->role, ['admin', 'editor', 'author']);
+        return $user->hasPermission('articles.create');
     }
 
     public function update(User $user, Article $article): bool
     {
-        if ($user->role === 'editor') {
-            return true;
-        }
-        return $user->role === 'author' && $article->user_id === $user->id;
+        return $user->hasPermission('articles.update')
+            || ($user->hasPermission('articles.update.own') && $article->user_id === $user->id);
     }
 
     public function delete(User $user, Article $article): bool
     {
-        if ($user->role === 'editor') {
-            return true;
-        }
-        return $user->role === 'author' && $article->user_id === $user->id;
+        return $user->hasPermission('articles.delete')
+            || ($user->hasPermission('articles.delete.own') && $article->user_id === $user->id);
     }
 
-    public function publish(User $user, Article $article): bool
+    public function publish(User $user): bool
     {
-        return $user->role === 'editor';
+        return $user->hasPermission('articles.publish');
     }
 }

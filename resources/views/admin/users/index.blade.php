@@ -15,6 +15,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Имя</th>
+                    <th>Имя пользователя</th>
                     <th>Email</th>
                     <th>Роль</th>
                     <th>Дата регистрации</th>
@@ -26,6 +27,7 @@
                 <tr>
                     <td>{{ $user->id }}</td>
                     <td class="fw-semibold">{{ $user->name }}</td>
+                    <td class="font-monospace">{{ $user->username }}</td>
                     <td class="text-muted">{{ $user->email }}</td>
                     <td>
                         <span class="badge {{ $user->role === 'admin' ? 'bg-danger' : 'bg-primary' }} text-uppercase">
@@ -46,7 +48,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center py-4 text-muted">Пользователей нет</td>
+                    <td colspan="7" class="text-center py-4 text-muted">Пользователей нет</td>
                 </tr>
                 @endforelse
             </tbody>

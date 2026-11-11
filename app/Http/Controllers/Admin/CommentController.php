@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
+use App\Support\PublicCache;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -13,11 +14,11 @@ class CommentController extends Controller
         $status = $request->input('status');
         $query = Comment::with(['user', 'article']);
 
-        if ($status) {
+        if (in_array($status, ['pending', 'approved', 'rejected'], true)) {
             $query->where('status', $status);
         }
 
-        $comments = $query->latest()->paginate(15);
+        $comments = $query->latest()->paginate(15)->withQueryString();
 
         return view('admin.comments.index', compact('comments'));
     }
@@ -25,6 +26,7 @@ class CommentController extends Controller
     public function approve(Comment $comment)
     {
         $comment->update(['status' => 'approved']);
+        PublicCache::flush();
 
         return back()->with('success', 'Комментарий одобрен.');
     }
@@ -32,14 +34,16 @@ class CommentController extends Controller
     public function reject(Comment $comment)
     {
         $comment->update(['status' => 'rejected']);
+        PublicCache::flush();
 
-        return back()->with('success', 'Комментарий отклонен.');
+        return back()->with('success', 'Комментарий отклонён.');
     }
 
     public function destroy(Comment $comment)
     {
         $comment->delete();
+        PublicCache::flush();
 
-        return back()->with('success', 'Комментарий удален.');
+        return back()->with('success', 'Комментарий удалён.');
     }
 }

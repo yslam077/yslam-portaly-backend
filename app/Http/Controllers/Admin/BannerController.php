@@ -14,6 +14,7 @@ class BannerController extends Controller
     public function index()
     {
         $banners = Banner::orderBy('sort_order')->paginate(15);
+
         return view('admin.banners.index', compact('banners'));
     }
 
@@ -27,12 +28,12 @@ class BannerController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'image' => ['required', 'image', 'max:2048'],
-            'link' => ['nullable', 'url'],
-            'sort_order' => ['integer'],
-            'is_active' => ['boolean'],
+            'link' => ['nullable', 'string', 'max:500'],
+            'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
 
         $validated['image'] = $this->imageUploadService->upload($request->file('image'), 'banners');
+        $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $validated['is_active'] = $request->boolean('is_active');
 
         Banner::create($validated);
@@ -50,21 +51,23 @@ class BannerController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'image' => ['nullable', 'image', 'max:2048'],
-            'link' => ['nullable', 'url'],
-            'sort_order' => ['integer'],
-            'is_active' => ['boolean'],
+            'link' => ['nullable', 'string', 'max:500'],
+            'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
+
+        unset($validated['image']);
 
         if ($request->hasFile('image')) {
             $this->imageUploadService->delete($banner->image);
             $validated['image'] = $this->imageUploadService->upload($request->file('image'), 'banners');
         }
 
+        $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $validated['is_active'] = $request->boolean('is_active');
 
         $banner->update($validated);
 
-        return redirect()->route('admin.banners.index')->with('success', 'Баннер обновлен.');
+        return redirect()->route('admin.banners.index')->with('success', 'Баннер обновлён.');
     }
 
     public function destroy(Banner $banner)
@@ -72,6 +75,6 @@ class BannerController extends Controller
         $this->imageUploadService->delete($banner->image);
         $banner->delete();
 
-        return redirect()->route('admin.banners.index')->with('success', 'Баннер удален.');
+        return redirect()->route('admin.banners.index')->with('success', 'Баннер удалён.');
     }
 }

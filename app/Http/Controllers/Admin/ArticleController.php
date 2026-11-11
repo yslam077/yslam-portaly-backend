@@ -7,8 +7,9 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Services\ImageUploadService;
+use App\Support\PublicCache;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ArticleController extends Controller
 {
@@ -16,102 +17,159 @@ class ArticleController extends Controller
 
     public function index(Request $request)
     {
+        Gate::authorize('viewAny', Article::class);
+
+        $user = $request->user();
         $query = Article::with(['category', 'user']);
 
-        if ($search = $request->input('search')) {
-            $query->where('title->tm', 'ILIKE', "%{$search}%")
-                  ->orWhere('title->ru', 'ILIKE', "%{$search}%");
+        // Автор видит только свои новости
+        if (! $user->hasPermission('articles.update')) {
+            $query->where('user_id', $user->id);
         }
 
-        $articles = $query->latest()->paginate(15);
+        if ($search = trim((string) $request->input('search'))) {
+            $like = '%' . str_replace(['\\', '%', '_'], ['\\\\', '\%', '\_'], $search) . '%';
+            $query->where(function ($q) use ($like) {
+                foreach (['tm', 'ru', 'en'] as $locale) {
+                    $q->orWhereRaw('(articles.title::jsonb ->> ?) ILIKE ?', [$locale, $like]);
+                }
+            });
+        }
+
+        $articles = $query->latest()->paginate(15)->withQueryString();
+
         return view('admin.articles.index', compact('articles'));
     }
 
     public function create()
     {
-        $categories = Category::all();
-        $tags = Tag::all();
-        return view('admin.articles.create', compact('categories', 'tags'));
+        Gate::authorize('create', Article::class);
+
+        return view('admin.articles.create', [
+            'categories' => Category::orderBy('sort_order')->get(),
+            'tags' => Tag::all(),
+        ]);
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => ['required', 'array'],
-            'title.tm' => ['required', 'string', 'max:255'],
-            'title.ru' => ['required', 'string', 'max:255'],
-            'content' => ['required', 'array'],
-            'content.tm' => ['required', 'string'],
-            'content.ru' => ['required', 'string'],
-            'excerpt' => ['nullable', 'array'],
-            'category_id' => ['required', 'exists:categories,id'],
-            'image' => ['nullable', 'image', 'max:2048'],
-            'is_featured' => ['boolean'],
-            'status' => ['required', 'in:draft,published'],
-            'tags' => ['array'],
-        ]);
+        Gate::authorize('create', Article::class);
 
-        $validated['user_id'] = Auth::id();
-        $validated['image'] = $this->imageUploadService->upload($request->file('image'), 'articles');
-        $validated['published_at'] = $validated['status'] === 'published' ? now() : null;
-        $validated['is_featured'] = $request->boolean('is_featured');
+        $validated = $request->validate($this->rules());
+        $tags = $validated['tags'] ?? [];
+        unset($validated['tags'], $validated['image']);
 
-        $article = Article::create($validated);
-        if (isset($validated['tags'])) {
-            $article->tags()->sync($validated['tags']);
+        $data = $this->prepare($request, $validated);
+        $data['user_id'] = $request->user()->id;
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $this->imageUploadService->upload($request->file('image'), 'articles');
         }
 
-        return redirect()->route('admin.articles.index')->with('success', 'Статья успешно создана.');
+        $article = Article::create($data);
+        $article->tags()->sync($tags);
+
+        PublicCache::flush();
+
+        return redirect()->route('admin.articles.index')->with('success', 'Новость создана.');
     }
 
     public function edit(Article $article)
     {
-        $categories = Category::all();
-        $tags = Tag::all();
-        return view('admin.articles.edit', compact('article', 'categories', 'tags'));
+        Gate::authorize('update', $article);
+
+        return view('admin.articles.edit', [
+            'article' => $article,
+            'categories' => Category::orderBy('sort_order')->get(),
+            'tags' => Tag::all(),
+        ]);
     }
 
     public function update(Request $request, Article $article)
     {
-        $validated = $request->validate([
-            'title' => ['required', 'array'],
-            'title.tm' => ['required', 'string', 'max:255'],
-            'title.ru' => ['required', 'string', 'max:255'],
-            'content' => ['required', 'array'],
-            'content.tm' => ['required', 'string'],
-            'content.ru' => ['required', 'string'],
-            'excerpt' => ['nullable', 'array'],
-            'category_id' => ['required', 'exists:categories,id'],
-            'image' => ['nullable', 'image', 'max:2048'],
-            'is_featured' => ['boolean'],
-            'status' => ['required', 'in:draft,published'],
-            'tags' => ['array'],
-        ]);
+        Gate::authorize('update', $article);
+
+        $validated = $request->validate($this->rules());
+        $tags = $validated['tags'] ?? [];
+        unset($validated['tags'], $validated['image']);
+
+        $data = $this->prepare($request, $validated, $article);
 
         if ($request->hasFile('image')) {
             $this->imageUploadService->delete($article->image);
-            $validated['image'] = $this->imageUploadService->upload($request->file('image'), 'articles');
+            $data['image'] = $this->imageUploadService->upload($request->file('image'), 'articles');
         }
 
-        if ($validated['status'] === 'published' && !$article->published_at) {
-            $validated['published_at'] = now();
-        }
+        $article->update($data);
+        $article->tags()->sync($tags);
 
-        $validated['is_featured'] = $request->boolean('is_featured');
+        PublicCache::flush();
 
-        $article->update($validated);
-        if (isset($validated['tags'])) {
-            $article->tags()->sync($validated['tags']);
-        }
-
-        return redirect()->route('admin.articles.index')->with('success', 'Статья успешно обновлена.');
+        return redirect()->route('admin.articles.index')->with('success', 'Новость обновлена.');
     }
 
     public function destroy(Article $article)
     {
-        $this->imageUploadService->delete($article->image);
+        Gate::authorize('delete', $article);
+
+        // Картинку не удаляем: новость удаляется мягко и может быть восстановлена
         $article->delete();
 
-        return redirect()->route('admin.articles.index')->with('success', 'Статья удалена.');
+        PublicCache::flush();
+
+        return redirect()->route('admin.articles.index')->with('success', 'Новость удалена.');
+    }
+
+    protected function rules(): array
+    {
+        return [
+            'title' => ['required', 'array'],
+            'title.tm' => ['required', 'string', 'max:255'],
+            'title.ru' => ['required', 'string', 'max:255'],
+            'title.en' => ['nullable', 'string', 'max:255'],
+            'content' => ['required', 'array'],
+            'content.tm' => ['required', 'string'],
+            'content.ru' => ['required', 'string'],
+            'content.en' => ['nullable', 'string'],
+            'excerpt' => ['nullable', 'array'],
+            'excerpt.tm' => ['nullable', 'string', 'max:500'],
+            'excerpt.ru' => ['nullable', 'string', 'max:500'],
+            'excerpt.en' => ['nullable', 'string', 'max:500'],
+            'category_id' => ['required', 'exists:categories,id'],
+            'image' => ['nullable', 'image', 'max:2048'],
+            'status' => ['required', 'in:draft,pending,published'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['exists:tags,id'],
+        ];
+    }
+
+    protected function prepare(Request $request, array $data, ?Article $article = null): array
+    {
+        foreach (['title', 'content', 'excerpt'] as $field) {
+            $data[$field] = array_filter($data[$field] ?? [], fn ($v) => $v !== null && $v !== '');
+        }
+
+        $canPublish = $request->user()->can('publish', Article::class);
+
+        if (! $canPublish) {
+            // Автор не может публиковать
+            if ($article && $article->status === 'published') {
+                $data['status'] = 'published';
+            } elseif ($data['status'] === 'published') {
+                $data['status'] = 'pending';
+            }
+        } else {
+            $data['is_featured'] = $request->boolean('is_featured');
+        }
+
+        if ($data['status'] === 'published') {
+            if (! $article || ! $article->published_at) {
+                $data['published_at'] = now();
+            }
+        } elseif (! $article) {
+            $data['published_at'] = null;
+        }
+
+        return $data;
     }
 }

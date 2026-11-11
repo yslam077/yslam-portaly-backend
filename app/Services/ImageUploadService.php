@@ -7,20 +7,14 @@ use Illuminate\Support\Facades\Storage;
 
 class ImageUploadService
 {
-    public function upload(?UploadedFile $file, string $folder = 'uploads'): ?string
+    public function upload(?UploadedFile $file, string $directory): ?string
     {
-        if (!$file) {
-            return null;
-        }
-
-        $path = $file->store($folder, 'public');
-
-        return $path;
+        return $file ? $file->store($directory, 'public') : null;
     }
 
     public function delete(?string $path): void
     {
-        if ($path && Storage::disk('public')->exists($path)) {
+        if ($path) {
             Storage::disk('public')->delete($path);
         }
     }

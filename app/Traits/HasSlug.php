@@ -2,37 +2,56 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 trait HasSlug
 {
-    public static function bootHasSlug()
+    public static function bootHasSlug(): void
     {
         static::saving(function ($model) {
-            $sourceField = isset($model->title) ? 'title' : 'name';
-            $fieldValue = $model->{$sourceField} ?? null;
+            if (! empty($model->slug)) {
+                return;
+            }
 
-            if (is_array($fieldValue)) {
-                $locale = app()->getLocale();
-                $sourceValue = $fieldValue[$locale] ?? reset($fieldValue) ?? '';
+            $field = property_exists($model, 'slugSource') ? $model->slugSource : 'name';
+
+            if (method_exists($model, 'isTranslatableAttribute') && $model->isTranslatableAttribute($field)) {
+                $translations = array_filter($model->getTranslations($field));
+                $source = $translations['tm']
+                    ?? $translations[app()->getLocale()]
+                    ?? (reset($translations) ?: '');
             } else {
-                $sourceValue = (string) $fieldValue;
+                $source = (string) $model->getAttribute($field);
             }
 
-            if (empty($model->slug) && !empty($sourceValue)) {
-                $slug = Str::slug($sourceValue);
-                $originalSlug = $slug;
-                $count = 1;
+            $base = Str::slug($source);
 
-                while (self::where('slug', $slug)->when($model->exists, function ($query) use ($model) {
-                    return $query->where($model->getKeyName(), '!=', $model->getKey());
-                })->exists()) {
-                    $slug = "{$originalSlug}-{$count}";
-                    $count++;
-                }
-
-                $model->slug = $slug;
+            if ($base === '') {
+                $base = Str::lower(class_basename($model)) . '-' . Str::lower(Str::random(6));
             }
+
+            $slug = $base;
+            $count = 1;
+
+            while (static::slugExists($model, $slug)) {
+                $slug = $base . '-' . $count++;
+            }
+
+            $model->slug = $slug;
         });
+    }
+
+    protected static function slugExists($model, string $slug): bool
+    {
+        $query = static::query();
+
+        if (in_array(SoftDeletes::class, class_uses_recursive($model), true)) {
+            $query->withTrashed();
+        }
+
+        return $query->where('slug', $slug)
+            ->when($model->exists, fn ($q) => $q->where($model->getKeyName(), '!=', $model->getKey()))
+            ->exists();
     }
 }

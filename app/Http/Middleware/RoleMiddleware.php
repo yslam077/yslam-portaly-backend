@@ -11,12 +11,18 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
         $user = $request->user();
+        $wantsJson = $request->expectsJson() || $request->is('api/*');
 
-        if (!$user || !$user->hasRole($roles)) {
-            if ($request->expectsJson()) {
-                return response()->json(['message' => 'Forbidden.'], 403);
-            }
-            abort(403);
+        if (! $user) {
+            return $wantsJson
+                ? response()->json(['message' => __('messages.unauthorized')], 401)
+                : redirect()->guest(route('admin.login'));
+        }
+
+        if (! $user->hasRole($roles)) {
+            return $wantsJson
+                ? response()->json(['message' => __('messages.forbidden')], 403)
+                : abort(403, __('messages.forbidden'));
         }
 
         return $next($request);

@@ -4,21 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Вход — Yslam Portaly Admin</title>
-
-    <!-- Локальный Bootstrap 5 -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 </head>
 <body class="bg-light d-flex align-items-center justify-content-center min-vh-100">
 
-    <div class="card border-0 shadow-sm p-4" style="width: 100%; max-width: 400px;">
+    <div class="card border-0 shadow-sm p-4" style="width: 100%; max-width: 430px;">
         <div class="text-center mb-4">
             <h3 class="fw-bold m-0">Yslam Portaly</h3>
             <span class="text-muted small">Панель администратора</span>
         </div>
 
         @if($errors->any())
-            <div class="alert alert-danger py-2 small">
+            <div class="alert alert-danger py-2 small mb-3">
                 <ul class="mb-0 ps-3">
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -31,13 +28,13 @@
             @csrf
 
             <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" value="{{ old('email') }}" required class="form-control" autofocus>
+                <label class="form-label">Имя пользователя</label>
+                <input type="text" name="username" value="{{ old('username') }}" required maxlength="50" autocomplete="username" class="form-control" autofocus>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Пароль</label>
-                <input type="password" name="password" required class="form-control">
+                <input type="password" name="password" required autocomplete="current-password" class="form-control">
             </div>
 
             <div class="mb-3 form-check">

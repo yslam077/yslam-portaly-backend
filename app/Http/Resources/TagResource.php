@@ -11,8 +11,9 @@ class TagResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->getTranslation('name', app()->getLocale(), false) ?? $this->name,
+            'name' => $this->name,
             'slug' => $this->slug,
+            'articles_count' => $this->whenCounted('articles'),
         ];
     }
 }

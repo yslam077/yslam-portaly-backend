@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('header', 'Moderatsiya Kommentariev')
+@section('header', 'Модерация комментариев')
 
 @section('content')
 <div class="card border-0 shadow-sm">
@@ -10,50 +10,54 @@
                 <thead class="table-light">
                     <tr>
                         <th scope="col" class="ps-3">ID</th>
-                        <th scope="col">Avtor</th>
-                        <th scope="col">Kommentariy</th>
-                        <th scope="col">K Stat'ye</th>
-                        <th scope="col">Status</th>
-                        <th scope="col" class="text-end pe-3">Deystviya</th>
+                        <th scope="col">Автор</th>
+                        <th scope="col">Комментарий</th>
+                        <th scope="col">К статье</th>
+                        <th scope="col">Статус</th>
+                        <th scope="col" class="text-end pe-3">Действия</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($comments as $comment)
                         <tr>
                             <td class="ps-3 fw-bold">{{ $comment->id }}</td>
-                            <td>{{ $comment->user_name ?? 'Gost\'' }}</td>
+                            <td>{{ $comment->user->name ?? 'Гость' }}</td>
                             <td style="max-width: 300px;" class="text-truncate">{{ $comment->body }}</td>
                             <td><span class="text-muted small">{{ $comment->article->title ?? 'N/A' }}</span></td>
                             <td>
-                                @if($comment->is_approved)
-                                    <span class="badge bg-success">Odobren</span>
+                                @if($comment->status === 'approved')
+                                    <span class="badge bg-success">Одобрен</span>
+                                @elseif($comment->status === 'rejected')
+                                    <span class="badge bg-danger">Отклонён</span>
                                 @else
-                                    <span class="badge bg-warning text-dark">Na proverke</span>
+                                    <span class="badge bg-warning text-dark">На проверке</span>
                                 @endif
                             </td>
                             <td class="text-end pe-3">
-                                @if(!$comment->is_approved)
+                                @if($comment->status !== 'approved')
                                     <form action="{{ route('admin.comments.approve', $comment) }}" method="POST" class="d-inline me-1">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm btn-success">Odobrit'</button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('admin.comments.reject', $comment) }}" method="POST" class="d-inline me-1">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-warning">Otklonit'</button>
+                                        <button type="submit" class="btn btn-sm btn-success">Одобрить</button>
                                     </form>
                                 @endif
 
-                                <form action="{{ route('admin.comments.destroy', $comment) }}" method="POST" class="d-inline" onsubmit="return confirm('Udalit\' kommentariy?');">
+                                @if($comment->status !== 'rejected')
+                                    <form action="{{ route('admin.comments.reject', $comment) }}" method="POST" class="d-inline me-1">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-warning">Отклонить</button>
+                                    </form>
+                                @endif
+
+                                <form action="{{ route('admin.comments.destroy', $comment) }}" method="POST" class="d-inline" onsubmit="return confirm('Удалить комментарий?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Udalit'</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
                                 </form>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">Kommentariev dlya moderatsii net.</td>
+                            <td colspan="6" class="text-center py-4 text-muted">Комментариев для модерации нет.</td>
                         </tr>
                     @endforelse
                 </tbody>

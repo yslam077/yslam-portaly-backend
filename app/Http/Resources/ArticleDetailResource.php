@@ -7,24 +7,40 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleDetailResource extends JsonResource
 {
+    protected $related = null;
+
+    public function withRelatedArticles($related): static
+    {
+        $this->related = $related;
+
+        return $this;
+    }
+
     public function toArray(Request $request): array
     {
-        $locale = app()->getLocale();
+        $related = $this->related
+            ?? ($this->resource->relationLoaded('related_articles')
+                ? $this->resource->getRelation('related_articles')
+                : null);
 
         return [
             'id' => $this->id,
-            'title' => $this->getTranslation('title', $locale, false) ?? $this->title,
-            'content' => $this->getTranslation('content', $locale, false) ?? $this->content,
-            'excerpt' => $this->getTranslation('excerpt', $locale, false) ?? $this->excerpt,
+            'title' => $this->title,
+            'content' => $this->content,
+            'excerpt' => $this->excerpt,
             'slug' => $this->slug,
             'image' => $this->image ? asset('storage/' . $this->image) : null,
             'views' => $this->views,
             'is_featured' => $this->is_featured,
             'published_at' => $this->published_at?->toIso8601String(),
+            'comments_count' => $this->whenCounted('comments'),
             'category' => new CategoryResource($this->whenLoaded('category')),
             'author' => new UserResource($this->whenLoaded('user')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
-            'related_articles' => ArticleListResource::collection($this->when('related_articles', $this->related_articles)),
+            'related_articles' => $this->when(
+                $related !== null,
+                fn () => ArticleListResource::collection($related)
+            ),
         ];
     }
 }

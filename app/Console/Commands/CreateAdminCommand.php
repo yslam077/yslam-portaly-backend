@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class CreateAdminCommand extends Command
 {
@@ -15,17 +17,17 @@ class CreateAdminCommand extends Command
     public function handle(): int
     {
         $name = $this->ask('Enter admin name');
-        $phone = $this->ask('Enter admin phone number');
+        $username = Str::lower(trim((string) $this->ask('Enter admin username')));
         $password = $this->secret('Enter admin password');
 
         $validator = Validator::make([
             'name' => $name,
-            'phone' => $phone,
+            'username' => $username,
             'password' => $password,
         ], [
             'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'unique:users,phone'],
-            'password' => ['required', 'string', 'min:6'],
+            'username' => ['required', 'string', 'min:3', 'max:50', 'regex:/^[a-z0-9._-]+$/', Rule::unique('users', 'username')],
+            'password' => ['required', 'string', 'min:8'],
         ]);
 
         if ($validator->fails()) {
@@ -37,13 +39,12 @@ class CreateAdminCommand extends Command
 
         User::create([
             'name' => $name,
-            'phone' => $phone,
+            'username' => $username,
             'password' => Hash::make($password),
             'role' => 'admin',
-            'phone_verified_at' => now(),
         ]);
 
-        $this->info('Administrator account successfully created!');
+        $this->info("Administrator account '{$username}' successfully created!");
         return self::SUCCESS;
     }
 }

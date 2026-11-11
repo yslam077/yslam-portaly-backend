@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleDetailResource;
@@ -47,7 +47,7 @@ class ArticleController extends Controller
             $escapedSearch = '%' . addcslashes($search, '%_\\') . '%';
             $query->where(function ($q) use ($locale, $escapedSearch) {
                 $q->whereRaw("title->>? ILIKE ?", [$locale, $escapedSearch])
-                  ->orWhereRaw("content->>? ILIKE ?", [$locale, $escapedSearch]);
+                    ->orWhereRaw("content->>? ILIKE ?", [$locale, $escapedSearch]);
             });
         }
 
@@ -99,25 +99,28 @@ class ArticleController extends Controller
         return ArticleListResource::collection($articles);
     }
 
-    public function featured(Request $request): ArticleDetailResource|JsonResponse
+    public function featured(): ArticleDetailResource|\Illuminate\Http\JsonResponse
     {
-        $locale = app()->getLocale();
-        $cacheKey = "articles_featured_{$locale}";
+        $base = fn() => Article::published()
+            ->with(['category', 'user', 'tags'])
+            ->withCount(['comments' => fn($q) => $q->approved()]);
 
-        $article = Cache::remember($cacheKey, now()->addMinutes(10), function () {
-            return Article::published()
-                ->with(['category', 'user', 'tags'])
-                ->where('is_featured', true)
-                ->latest('published_at')
-                ->first() 
-                ?? Article::published()->with(['category', 'user', 'tags'])->latest('published_at')->first();
-        });
+        $article = $base()->where('is_featured', true)->latest('published_at')->first()
+            ?? $base()->latest('published_at')->first();
 
-        if (!$article) {
-            return response()->json(['message' => 'Article not found'], 404);
+        if (! $article) {
+            return response()->json(['data' => null]);
         }
 
-        return new ArticleDetailResource($article);
+        $related = Article::published()
+            ->where('category_id', $article->category_id)
+            ->where('id', '!=', $article->id)
+            ->with(['category', 'user'])
+            ->latest('published_at')
+            ->limit(4)
+            ->get();
+
+        return (new ArticleDetailResource($article))->withRelatedArticles($related);
     }
 
     public function show(string $slug): ArticleDetailResource

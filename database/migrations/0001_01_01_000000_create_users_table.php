@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone')->nullable()->unique();
-            $table->string('email')->nullable();
+            $table->string('email')->nullable()->unique();
             $table->string('password')->nullable();
             $table->string('role')->default('reader');
             $table->timestamp('phone_verified_at')->nullable();

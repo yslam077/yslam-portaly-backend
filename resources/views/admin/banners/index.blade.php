@@ -7,7 +7,6 @@
     <span class="text-muted">Рекламные баннеры и слайдеры</span>
     <a href="{{ route('admin.banners.create') }}" class="btn btn-primary">Добавить баннер</a>
 </div>
-
 <div class="card border-0 shadow-sm">
     <div class="table-responsive">
         <table class="table align-middle m-0">

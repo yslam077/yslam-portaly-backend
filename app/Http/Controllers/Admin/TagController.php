@@ -10,7 +10,8 @@ class TagController extends Controller
 {
     public function index()
     {
-        $tags = Tag::latest()->paginate(15);
+        $tags = Tag::withCount('articles')->latest()->paginate(15);
+
         return view('admin.tags.index', compact('tags'));
     }
 
@@ -21,15 +22,9 @@ class TagController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'array'],
-            'name.tm' => ['required', 'string', 'max:255'],
-            'name.ru' => ['required', 'string', 'max:255'],
-        ]);
+        Tag::create($this->validated($request));
 
-        Tag::create($validated);
-
-        return redirect()->route('admin.tags.index')->with('success', 'Тег успешно создан.');
+        return redirect()->route('admin.tags.index')->with('success', 'Тег создан.');
     }
 
     public function edit(Tag $tag)
@@ -39,21 +34,30 @@ class TagController extends Controller
 
     public function update(Request $request, Tag $tag)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'array'],
-            'name.tm' => ['required', 'string', 'max:255'],
-            'name.ru' => ['required', 'string', 'max:255'],
-        ]);
+        $tag->update($this->validated($request));
 
-        $tag->update($validated);
-
-        return redirect()->route('admin.tags.index')->with('success', 'Тег успешно обновлен.');
+        return redirect()->route('admin.tags.index')->with('success', 'Тег обновлён.');
     }
 
     public function destroy(Tag $tag)
     {
+        $tag->articles()->detach();
         $tag->delete();
 
-        return redirect()->route('admin.tags.index')->with('success', 'Тег удален.');
+        return redirect()->route('admin.tags.index')->with('success', 'Тег удалён.');
+    }
+
+    protected function validated(Request $request): array
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'array'],
+            'name.tm' => ['required', 'string', 'max:255'],
+            'name.ru' => ['required', 'string', 'max:255'],
+            'name.en' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $validated['name'] = array_filter($validated['name'], fn ($v) => $v !== null && $v !== '');
+
+        return $validated;
     }
 }
