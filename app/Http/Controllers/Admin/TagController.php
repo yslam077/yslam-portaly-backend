@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
+use App\Support\PublicCache;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -23,6 +24,7 @@ class TagController extends Controller
     public function store(Request $request)
     {
         Tag::create($this->validated($request));
+        PublicCache::flush();
 
         return redirect()->route('admin.tags.index')->with('success', 'Тег создан.');
     }
@@ -35,6 +37,7 @@ class TagController extends Controller
     public function update(Request $request, Tag $tag)
     {
         $tag->update($this->validated($request));
+        PublicCache::flush();
 
         return redirect()->route('admin.tags.index')->with('success', 'Тег обновлён.');
     }
@@ -43,6 +46,7 @@ class TagController extends Controller
     {
         $tag->articles()->detach();
         $tag->delete();
+        PublicCache::flush();
 
         return redirect()->route('admin.tags.index')->with('success', 'Тег удалён.');
     }

@@ -12,7 +12,10 @@ class SetLocale
 
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = $this->fromQuery($request) ?? $this->fromHeader($request) ?? 'tm';
+        $locale = $this->fromQuery($request)
+            ?? $this->fromCustomHeader($request)
+            ?? $this->fromAcceptHeader($request)
+            ?? 'tm';
 
         app()->setLocale($locale);
 
@@ -24,12 +27,20 @@ class SetLocale
 
     protected function fromQuery(Request $request): ?string
     {
-        $lang = $request->query('lang');
+        $lang = $request->query('lang') ?? $request->query('locale');
 
-        return is_string($lang) && in_array($lang, $this->supported, true) ? $lang : null;
+        return is_string($lang) && in_array(strtolower($lang), $this->supported, true) ? strtolower($lang) : null;
     }
 
-    protected function fromHeader(Request $request): ?string
+    protected function fromCustomHeader(Request $request): ?string
+    {
+        $header = (string) ($request->header('X-Locale') ?? $request->header('x-locale') ?? '');
+        $code = strtolower(trim($header));
+
+        return in_array($code, $this->supported, true) ? $code : null;
+    }
+
+    protected function fromAcceptHeader(Request $request): ?string
     {
         $header = (string) $request->header('Accept-Language', '');
 

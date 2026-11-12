@@ -10,10 +10,16 @@ class PublicCache
     {
         foreach (['tm', 'ru', 'en'] as $locale) {
             Cache::forget("categories_list_{$locale}");
+            Cache::forget("categories_list_ids_{$locale}");
             Cache::forget("articles_trending_{$locale}");
-            for ($limit = 1; $limit <= 20; $limit++) {
-                Cache::forget("articles_popular_{$locale}_{$limit}");
-            }
+            Cache::forget("articles_trending_ids_{$locale}");
+            Cache::forget("articles_popular_{$locale}");
+            Cache::forget("articles_popular_ids_{$locale}");
+            Cache::forget("tags_list_{$locale}");
+            Cache::forget("tags_list_ids_{$locale}");
         }
+
+        Cache::forget('banners_active');
+        Cache::forget('banners_active_ids');
     }
 }

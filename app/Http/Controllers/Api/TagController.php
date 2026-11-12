@@ -13,9 +13,10 @@ class TagController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $locale = app()->getLocale();
-        $tags = Cache::remember("tags_list_{$locale}", now()->addMinutes(10), function () {
-            return Tag::all();
+        $tagIds = Cache::remember("tags_list_ids_{$locale}", now()->addMinutes(10), function () {
+            return Tag::orderBy('id')->pluck('id')->all();
         });
+        $tags = Tag::whereKey($tagIds)->orderBy('id')->get();
 
         return TagResource::collection($tags);
     }

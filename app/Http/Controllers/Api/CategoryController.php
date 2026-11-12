@@ -15,9 +15,10 @@ class CategoryController extends Controller
     public function index(Request $request): AnonymousResourceCollection
     {
         $locale = app()->getLocale();
-        $categories = Cache::remember("categories_list_{$locale}", now()->addMinutes(10), function () {
-            return Category::orderBy('sort_order')->get();
+        $categoryIds = Cache::remember("categories_list_ids_{$locale}", now()->addMinutes(10), function () {
+            return Category::orderBy('sort_order')->pluck('id')->all();
         });
+        $categories = Category::whereKey($categoryIds)->orderBy('sort_order')->get();
 
         return CategoryResource::collection($categories);
     }

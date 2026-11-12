@@ -21,7 +21,7 @@
         @endif
 
         <div class="mb-3">
-            <label class="form-label">Заголовок <span class="text-danger">*</span></label>
+            <label class="form-label">Ady(zagolowok)<span class="text-danger">*</span></label>
             <input type="text" name="title" value="{{ old('title', $banner->title ?? '') }}" required class="form-control @error('title') is-invalid @enderror">
             @error('title')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -29,7 +29,7 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Href / Ссылка</label>
+            <label class="form-label">Href / ssylka</label>
             <input type="text" name="link" value="{{ old('link', $banner->link ?? '') }}" placeholder="mysal: /category/sport ýa-da https://saýt.com" class="form-control @error('link') is-invalid @enderror">
             <div class="form-text text-muted small">Islendik href salgysy: sahypa salgysy (mysal: <code>/category/sport</code>, <code>/article/habar-1</code>) ýa-da daşarky doly salgy (<code>https://...</code>).</div>
             @error('link')
@@ -57,12 +57,12 @@
 
         <div class="form-check mb-4">
             <input type="checkbox" name="is_active" value="1" class="form-check-input" id="is_active" {{ old('is_active', $banner->is_active ?? true) ? 'checked' : '' }}>
-            <label class="form-check-label" for="is_active">Активен</label>
+            <label class="form-check-label" for="is_active">Aktiwda</label>
         </div>
 
         <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary">Сохранить</button>
-            <a href="{{ route('admin.banners.index') }}" class="btn btn-secondary">Назад</a>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{{ route('admin.banners.index') }}" class="btn btn-secondary">Yza</a>
         </div>
     </form>
 </div>

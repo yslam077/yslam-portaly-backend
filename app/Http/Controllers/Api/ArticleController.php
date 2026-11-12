@@ -65,15 +65,20 @@ class ArticleController extends Controller
     public function popular(Request $request): AnonymousResourceCollection
     {
         $locale = app()->getLocale();
-        $cacheKey = "articles_popular_{$locale}";
 
-        $articles = Cache::remember($cacheKey, now()->addMinutes(10), function () {
+        $articleIds = Cache::remember("articles_popular_ids_{$locale}", now()->addMinutes(10), function () {
             return Article::published()
-                ->with(['category', 'user'])
                 ->orderByDesc('views')
                 ->limit(6)
-                ->get();
+                ->pluck('id')
+                ->all();
         });
+        $articles = Article::published()
+            ->whereKey($articleIds)
+            ->with(['category', 'user'])
+            ->orderByDesc('views')
+            ->limit(6)
+            ->get();
 
         return ArticleListResource::collection($articles);
     }
@@ -81,11 +86,9 @@ class ArticleController extends Controller
     public function trending(Request $request): AnonymousResourceCollection
     {
         $locale = app()->getLocale();
-        $cacheKey = "articles_trending_{$locale}";
 
-        $articles = Cache::remember($cacheKey, now()->addMinutes(10), function () {
+        $articleIds = Cache::remember("articles_trending_ids_{$locale}", now()->addMinutes(10), function () {
             return Article::published()
-                ->with(['category', 'user'])
                 ->withCount(['comments' => function ($query) {
                     $query->approved()->where('created_at', '>=', now()->subDays(30));
                 }])
@@ -93,8 +96,20 @@ class ArticleController extends Controller
                 ->orderByDesc('comments_count')
                 ->orderByDesc('views')
                 ->limit(6)
-                ->get();
+                ->pluck('id')
+                ->all();
         });
+        $articles = Article::published()
+            ->whereKey($articleIds)
+            ->with(['category', 'user'])
+            ->withCount(['comments' => function ($query) {
+                $query->approved()->where('created_at', '>=', now()->subDays(30));
+            }])
+            ->orderByDesc('is_featured')
+            ->orderByDesc('comments_count')
+            ->orderByDesc('views')
+            ->limit(6)
+            ->get();
 
         return ArticleListResource::collection($articles);
     }

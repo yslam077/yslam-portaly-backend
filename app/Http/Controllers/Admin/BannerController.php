@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Services\ImageUploadService;
+use App\Support\PublicCache;
 use Illuminate\Http\Request;
 
 class BannerController extends Controller
@@ -37,6 +38,7 @@ class BannerController extends Controller
         $validated['is_active'] = $request->boolean('is_active');
 
         Banner::create($validated);
+        PublicCache::flush();
 
         return redirect()->route('admin.banners.index')->with('success', 'Баннер создан.');
     }
@@ -66,6 +68,7 @@ class BannerController extends Controller
         $validated['is_active'] = $request->boolean('is_active');
 
         $banner->update($validated);
+        PublicCache::flush();
 
         return redirect()->route('admin.banners.index')->with('success', 'Баннер обновлён.');
     }
@@ -74,6 +77,7 @@ class BannerController extends Controller
     {
         $this->imageUploadService->delete($banner->image);
         $banner->delete();
+        PublicCache::flush();
 
         return redirect()->route('admin.banners.index')->with('success', 'Баннер удалён.');
     }

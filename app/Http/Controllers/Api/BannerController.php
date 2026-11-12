@@ -12,9 +12,10 @@ class BannerController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
-        $banners = Cache::remember('banners_active', now()->addMinutes(10), function () {
-            return Banner::active()->get();
+        $bannerIds = Cache::remember('banners_active_ids', now()->addMinutes(10), function () {
+            return Banner::active()->pluck('id')->all();
         });
+        $banners = Banner::active()->whereKey($bannerIds)->get();
 
         return BannerResource::collection($banners);
     }
