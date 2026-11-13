@@ -30,12 +30,64 @@ class TagSeeder extends Seeder
                 'slug' => 'futbol',
             ],
             [
+                'name' => ['tm' => 'Sport', 'ru' => 'Спорт', 'en' => 'Sport'],
+                'slug' => 'sport',
+            ],
+            [
                 'name' => ['tm' => 'Ylym', 'ru' => 'Наука', 'en' => 'Science'],
                 'slug' => 'ylym',
             ],
             [
                 'name' => ['tm' => 'Saglyk', 'ru' => 'Здоровье', 'en' => 'Health'],
                 'slug' => 'saglyk',
+            ],
+            [
+                'name' => ['tm' => 'Syýasat', 'ru' => 'Политика', 'en' => 'Politics'],
+                'slug' => 'syyasat',
+            ],
+            [
+                'name' => ['tm' => 'Biznes', 'ru' => 'Бизнес', 'en' => 'Business'],
+                'slug' => 'biznes',
+            ],
+            [
+                'name' => ['tm' => 'Medeniýet', 'ru' => 'Культура', 'en' => 'Culture'],
+                'slug' => 'kultura',
+            ],
+            [
+                'name' => ['tm' => 'Ykdysadyýet', 'ru' => 'Экономика', 'en' => 'Economy'],
+                'slug' => 'ekonomika',
+            ],
+            [
+                'name' => ['tm' => 'Jemgyýet', 'ru' => 'Общество', 'en' => 'Society'],
+                'slug' => 'jemgyyet',
+            ],
+            [
+                'name' => ['tm' => 'Bilim', 'ru' => 'Образование', 'en' => 'Education'],
+                'slug' => 'bilim',
+            ],
+            [
+                'name' => ['tm' => 'Syýahatçylyk', 'ru' => 'Туризм', 'en' => 'Travel'],
+                'slug' => 'syahatcylyk',
+            ],
+            [
+                'name' => ['tm' => 'Tebigat', 'ru' => 'Природа', 'en' => 'Nature'],
+                'slug' => 'tebigat',
+            ],
+            [
+                'name' => ['tm' => 'Awtoulaglar', 'ru' => 'Автомобили', 'en' => 'Automotive'],
+                'slug' => 'awtoulaglar',
+            ],
+            [
+                'name' => ['tm' => 'Energetika', 'ru' => 'Энергетика', 'en' => 'Energy'],
+                'slug' => 'energetika',
+            ],
+            [
+                'name' => ['tm' => 'Medeni miras', 'ru' => 'Культурное наследие', 'en' => 'Heritage'],
+                'slug' => 'medeni-miras',
+            ],
+            [
+                'name' => ['tm' => 'Suw serişdeleri', 'ru' => 'Водные ресурсы', 'en' => 'Water'],
+                'slug' => 'suw',
             ],
         ];
 

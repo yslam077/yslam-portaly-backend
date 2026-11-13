@@ -48,6 +48,26 @@ class CategorySeeder extends Seeder
                 'slug' => 'dunya',
                 'sort_order' => 7,
             ],
+            [
+                'name' => ['tm' => 'Jemgyýet', 'ru' => 'Общество', 'en' => 'Society'],
+                'slug' => 'jemgyyet',
+                'sort_order' => 8,
+            ],
+            [
+                'name' => ['tm' => 'Bilim', 'ru' => 'Образование', 'en' => 'Education'],
+                'slug' => 'bilim',
+                'sort_order' => 9,
+            ],
+            [
+                'name' => ['tm' => 'Tehnologiýa', 'ru' => 'Технологии', 'en' => 'Technology'],
+                'slug' => 'tehnologiya',
+                'sort_order' => 10,
+            ],
+            [
+                'name' => ['tm' => 'Syýahatçylyk', 'ru' => 'Туризм', 'en' => 'Travel'],
+                'slug' => 'syahatcylyk',
+                'sort_order' => 11,
+            ],
         ];
 
         foreach ($categories as $cat) {

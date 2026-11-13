@@ -1,0 +1,16 @@
+meta {
+  name: List category articles
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{baseUrl}}/api/v1/categories/{{categorySlug}}/articles?limit=12
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  X-Locale: {{locale}}
+}

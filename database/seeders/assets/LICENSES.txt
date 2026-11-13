@@ -1,0 +1,51 @@
+These photos are illustrative demo assets. The article text is original, fictional
+sample content and is not copied from Turkmenportal.
+
+The images are copies downloaded from Wikimedia Commons. The dust-storm, airport,
+and Olympic-complex files are resized Commons thumbnails; the other files are
+unchanged copies.
+
+ashgabat-south.jpg
+  "Southern part of Ashgabat" by Bayram A
+  CC BY-SA 4.0: https://creativecommons.org/licenses/by-sa/4.0/
+  Source: https://commons.wikimedia.org/wiki/File:Southern_part_of_Ashgabat.jpg
+
+football-team.jpg
+  "Turkmenistan football team 2015" by Mahmood Hosseini / Tasnim News Agency
+  CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+  Source: https://commons.wikimedia.org/wiki/File:Turkmenistan_football_team_2015.jpg
+
+turkmen-carpet.jpg
+  "The largest carpet in the world" by Ibrahim Rustamov
+  CC BY 2.5: https://creativecommons.org/licenses/by/2.5/
+  Source: https://commons.wikimedia.org/wiki/File:The_largest_carpet_in_the_world.JPG
+
+caspian-sea.jpg
+  "Caspian Sea Turkmenbashy" by Bayram A
+  CC BY-SA 4.0: https://creativecommons.org/licenses/by-sa/4.0/
+  Source: https://commons.wikimedia.org/wiki/File:Caspian_Sea_Turkmenbashy.jpg
+
+school-volleyball.jpg
+  "Turkmenistan school kids in uniform" by Kalpak Travel
+  CC BY-SA 4.0: https://creativecommons.org/licenses/by-sa/4.0/
+  Source: https://commons.wikimedia.org/wiki/File:Turkmenistan_school_kids_in_uniform.jpg
+
+darvaza.jpg
+  "The Door to Hell - Turkmenistan, Darvaza - panoramio" by flydime
+  CC BY 3.0: https://creativecommons.org/licenses/by/3.0/
+  Source: https://commons.wikimedia.org/wiki/File:The_Door_to_Hell_-_Turkmenistan,_Darvaza_-_panoramio.jpg
+
+dust-storm.jpg
+  "Dust Storm Over Turkmenistan" by NASA
+  Public domain (NASA): https://commons.wikimedia.org/wiki/Template:PD-USGov-NASA
+  Source: https://commons.wikimedia.org/wiki/File:Dust_Storm_Over_Turkmenistan.jpg
+
+ashgabat-airport.jpg
+  "Ashgabat - Main airport terminal" by P. Hughes
+  CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+  Source: https://commons.wikimedia.org/wiki/File:Ashgabat_-_Main_airport_terminal.jpg
+
+olympic-complex.jpg
+  "Ashgabat Olympic Complex" by Bayram A
+  CC BY-SA 4.0: https://creativecommons.org/licenses/by-sa/4.0/
+  Source: https://commons.wikimedia.org/wiki/File:Ashgabat_Olympic_Complex.jpg

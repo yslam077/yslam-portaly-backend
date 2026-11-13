@@ -1,0 +1,2649 @@
+{
+    "openapi": "3.1.2",
+    "info": {
+        "title": "Yslam Portaly API",
+        "version": "1.0.0",
+        "description": "REST API \u043d\u043e\u0432\u043e\u0441\u0442\u043d\u043e\u0433\u043e \u043f\u043e\u0440\u0442\u0430\u043b\u0430 Yslam Portaly (\u0432\u0435\u0440\u0441\u0438\u044f v1).\n\n\u0412\u0441\u0435 \u043c\u0430\u0440\u0448\u0440\u0443\u0442\u044b API \u0438\u043c\u0435\u044e\u0442 \u043f\u0440\u0435\u0444\u0438\u043a\u0441 `/api/v1`. \u0414\u043b\u044f \u0432\u0441\u0435\u0445 \u0437\u0430\u043f\u0440\u043e\u0441\u043e\u0432 \u0443\u043a\u0430\u0437\u044b\u0432\u0430\u0439\u0442\u0435 `Accept: application/json`.\n\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u044f\u0437\u044b\u043a \u0447\u0435\u0440\u0435\u0437 \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a `X-Locale: tm|ru|en`; \u0442\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=tm|ru|en` \u0438\n`Accept-Language`. \u041f\u0440\u0438 \u043e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0438 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u043e\u0433\u043e \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0435\u0442\u0441\u044f `tm`.\n\n\u0417\u0430\u0449\u0438\u0449\u0451\u043d\u043d\u044b\u0435 \u043c\u0430\u0440\u0448\u0440\u0443\u0442\u044b \u0442\u0440\u0435\u0431\u0443\u044e\u0442 `Authorization: Bearer <token>`: `GET /auth/me`,\n`POST /auth/logout`, `POST /articles/{slug}/comments`, \u0430 \u0442\u0430\u043a\u0436\u0435 `GET /me` \u0438 `PUT /me`\n(\u044d\u0442\u0438 \u043c\u0430\u0440\u0448\u0440\u0443\u0442\u044b \u0437\u0430\u0449\u0438\u0449\u0435\u043d\u044b `auth:sanctum` \u0432 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0438).\n\n\u0420\u0435\u0441\u0443\u0440\u0441\u043d\u044b\u0435 \u043e\u0442\u0432\u0435\u0442\u044b \u043e\u0431\u0451\u0440\u043d\u0443\u0442\u044b \u0432 `data`. \u041f\u0430\u0433\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0435 \u0441\u043f\u0438\u0441\u043a\u0438 \u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u043e \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u0442 `links`\n\u0438 `meta`, \u0432\u043a\u043b\u044e\u0447\u0430\u044f `current_page` \u0438 `last_page`. OTP \u0432 \u0442\u0435\u043a\u0443\u0449\u0435\u0439 \u0440\u0435\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438 \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442\u0441\u044f\n\u0432 \u043e\u0442\u0432\u0435\u0442\u0435 \u0434\u043b\u044f \u0442\u0435\u0441\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f \u0438 \u0434\u0435\u0439\u0441\u0442\u0432\u0443\u0435\u0442 10 \u043c\u0438\u043d\u0443\u0442."
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000"
+        },
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Production URL \u0438\u0437 APP_URL"
+        }
+    ],
+    "paths": {
+        "/api/v1/articles": {
+            "get": {
+                "operationId": "article.index",
+                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u043e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043d\u043d\u044b\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438 \u0441 \u043f\u0430\u0433\u0438\u043d\u0430\u0446\u0438\u0435\u0439. \u0424\u0438\u043b\u044c\u0442\u0440\u044b: category \u0438 tag \u043f\u043e slug, featured=true, search \u043f\u043e \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u0443 \u0438\u043b\u0438 \u0442\u0435\u043a\u0441\u0442\u0443; sort \u043f\u0440\u0438\u043d\u0438\u043c\u0430\u0435\u0442 latest \u0438\u043b\u0438 popular. limit \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0435\u043d \u0434\u0438\u0430\u043f\u0430\u0437\u043e\u043d\u043e\u043c 1\u201320, \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e 12.",
+                "summary": "\u0421\u043f\u0438\u0441\u043e\u043a \u043d\u043e\u0432\u043e\u0441\u0442\u0435\u0439",
+                "tags": [
+                    "Articles"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "\u041d\u043e\u043c\u0435\u0440 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u044b \u043f\u0430\u0433\u0438\u043d\u0430\u0446\u0438\u0438.",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u044d\u043b\u0435\u043c\u0435\u043d\u0442\u043e\u0432 \u043d\u0430 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435, \u043e\u0442 1 \u0434\u043e 20; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e 12.",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 12
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "\u0424\u0438\u043b\u044c\u0442\u0440 \u043f\u043e slug \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "news"
+                    },
+                    {
+                        "name": "tag",
+                        "in": "query",
+                        "description": "\u0424\u0438\u043b\u044c\u0442\u0440 \u043f\u043e slug \u0442\u0435\u0433\u0430.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "society"
+                    },
+                    {
+                        "name": "featured",
+                        "in": "query",
+                        "description": "\u041e\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u0442\u043e\u043b\u044c\u043a\u043e \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438.",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "example": true
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "\u041f\u043e\u0438\u0441\u043a \u043f\u043e \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u0443 \u0438\u043b\u0438 \u0442\u0435\u043a\u0441\u0442\u0443 \u043d\u0430 \u0432\u044b\u0431\u0440\u0430\u043d\u043d\u043e\u043c \u044f\u0437\u044b\u043a\u0435.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "\u043f\u043e\u0440\u0442\u0430\u043b"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "\u041f\u043e\u0440\u044f\u0434\u043e\u043a \u0441\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u043a\u0438: latest \u0438\u043b\u0438 popular.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "latest",
+                                "popular"
+                            ]
+                        },
+                        "example": "latest"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated set of `ArticleListResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "allOf": [
+                                                    {
+                                                        "$ref": "#/components/schemas/ArticleListResource"
+                                                    },
+                                                    {
+                                                        "type": "object",
+                                                        "required": [
+                                                            "category",
+                                                            "author"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object",
+                                            "properties": {
+                                                "first": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "last": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "prev": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "next": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "first",
+                                                "last",
+                                                "prev",
+                                                "next"
+                                            ]
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "from": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "minimum": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "description": "Generated paginator links.",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": [
+                                                                    "string",
+                                                                    "null"
+                                                                ]
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "url",
+                                                            "label",
+                                                            "active"
+                                                        ]
+                                                    }
+                                                },
+                                                "path": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "description": "Base path for paginator generated URLs."
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "description": "Number of items shown per page.",
+                                                    "minimum": 0
+                                                },
+                                                "to": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "description": "Number of the last item in the slice.",
+                                                    "minimum": 1
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "description": "Total number of items being paginated.",
+                                                    "minimum": 0
+                                                }
+                                            },
+                                            "required": [
+                                                "current_page",
+                                                "from",
+                                                "last_page",
+                                                "links",
+                                                "path",
+                                                "per_page",
+                                                "to",
+                                                "total"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "data",
+                                        "links",
+                                        "meta"
+                                    ]
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 42,
+                                            "title": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438 \u043f\u043e\u0440\u0442\u0430\u043b\u0430",
+                                            "excerpt": "\u041a\u0440\u0430\u0442\u043a\u043e\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438.",
+                                            "slug": "portal-news",
+                                            "image": null,
+                                            "views": 15,
+                                            "is_featured": false,
+                                            "published_at": "2026-01-15T09:30:00+00:00",
+                                            "category": {
+                                                "id": 2,
+                                                "name": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438",
+                                                "translations": {
+                                                    "tm": "T\u00e4zelikler",
+                                                    "ru": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438"
+                                                },
+                                                "slug": "news",
+                                                "sort_order": 1
+                                            },
+                                            "author": {
+                                                "id": 3,
+                                                "name": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440",
+                                                "avatar": null
+                                            }
+                                        }
+                                    ],
+                                    "meta": {
+                                        "current_page": 1,
+                                        "last_page": 1,
+                                        "per_page": 12,
+                                        "total": 1,
+                                        "from": 1,
+                                        "to": 1,
+                                        "path": "http://localhost/api/v1/articles"
+                                    },
+                                    "links": {
+                                        "first": "http://localhost/api/v1/articles?page=1",
+                                        "last": "http://localhost/api/v1/articles?page=1",
+                                        "prev": null,
+                                        "next": null
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/articles/popular": {
+            "get": {
+                "operationId": "article.popular",
+                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u0434\u043e \u0448\u0435\u0441\u0442\u0438 \u043e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043d\u043d\u044b\u0445 \u043d\u043e\u0432\u043e\u0441\u0442\u0435\u0439, \u043e\u0442\u0441\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0445 \u043f\u043e \u0447\u0438\u0441\u043b\u0443 \u043f\u0440\u043e\u0441\u043c\u043e\u0442\u0440\u043e\u0432.",
+                "summary": "\u041f\u043e\u043f\u0443\u043b\u044f\u0440\u043d\u044b\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438",
+                "tags": [
+                    "Articles"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `ArticleListResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "allOf": [
+                                                    {
+                                                        "$ref": "#/components/schemas/ArticleListResource"
+                                                    },
+                                                    {
+                                                        "type": "object",
+                                                        "required": [
+                                                            "category",
+                                                            "author"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 42,
+                                            "title": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438 \u043f\u043e\u0440\u0442\u0430\u043b\u0430",
+                                            "excerpt": "\u041a\u0440\u0430\u0442\u043a\u043e\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438.",
+                                            "slug": "portal-news",
+                                            "image": null,
+                                            "views": 15,
+                                            "is_featured": false,
+                                            "published_at": "2026-01-15T09:30:00+00:00",
+                                            "category": {
+                                                "id": 2,
+                                                "name": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438",
+                                                "translations": {
+                                                    "tm": "T\u00e4zelikler",
+                                                    "ru": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438"
+                                                },
+                                                "slug": "news",
+                                                "sort_order": 1
+                                            },
+                                            "author": {
+                                                "id": 3,
+                                                "name": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440",
+                                                "avatar": null
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/articles/trending": {
+            "get": {
+                "operationId": "article.trending",
+                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u0434\u043e \u0448\u0435\u0441\u0442\u0438 \u043e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043d\u043d\u044b\u0445 \u043d\u043e\u0432\u043e\u0441\u0442\u0435\u0439 \u0441 \u0443\u0447\u0451\u0442\u043e\u043c \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u043e\u0433\u043e, \u043e\u0434\u043e\u0431\u0440\u0435\u043d\u043d\u044b\u0445 \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0435\u0432 \u0437\u0430 30 \u0434\u043d\u0435\u0439 \u0438 \u043f\u0440\u043e\u0441\u043c\u043e\u0442\u0440\u043e\u0432.",
+                "summary": "\u041f\u043e\u043f\u0443\u043b\u044f\u0440\u043d\u044b\u0435 \u0437\u0430 \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u0435\u0435 \u0432\u0440\u0435\u043c\u044f \u043d\u043e\u0432\u043e\u0441\u0442\u0438",
+                "tags": [
+                    "Articles"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `ArticleListResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "allOf": [
+                                                    {
+                                                        "$ref": "#/components/schemas/ArticleListResource"
+                                                    },
+                                                    {
+                                                        "type": "object",
+                                                        "required": [
+                                                            "category",
+                                                            "author"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 42,
+                                            "title": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438 \u043f\u043e\u0440\u0442\u0430\u043b\u0430",
+                                            "excerpt": "\u041a\u0440\u0430\u0442\u043a\u043e\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438.",
+                                            "slug": "portal-news",
+                                            "image": null,
+                                            "views": 15,
+                                            "is_featured": false,
+                                            "published_at": "2026-01-15T09:30:00+00:00",
+                                            "category": {
+                                                "id": 2,
+                                                "name": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438",
+                                                "translations": {
+                                                    "tm": "T\u00e4zelikler",
+                                                    "ru": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438"
+                                                },
+                                                "slug": "news",
+                                                "sort_order": 1
+                                            },
+                                            "author": {
+                                                "id": 3,
+                                                "name": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440",
+                                                "avatar": null
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/articles/featured": {
+            "get": {
+                "operationId": "article.featured",
+                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u0443\u044e \u043e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043d\u043d\u0443\u044e \u043d\u043e\u0432\u043e\u0441\u0442\u044c, \u0430 \u0435\u0441\u043b\u0438 \u0435\u0451 \u043d\u0435\u0442 \u2014 \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u044e\u044e \u043e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043d\u043d\u0443\u044e. \u0415\u0441\u043b\u0438 \u043d\u043e\u0432\u043e\u0441\u0442\u0435\u0439 \u043d\u0435\u0442, data \u0440\u0430\u0432\u0435\u043d null.",
+                "summary": "\u0413\u043b\u0430\u0432\u043d\u0430\u044f \u043d\u043e\u0432\u043e\u0441\u0442\u044c",
+                "tags": [
+                    "Articles"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`ArticleDetailResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "anyOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "data": {
+                                                    "allOf": [
+                                                        {
+                                                            "$ref": "#/components/schemas/ArticleDetailResource"
+                                                        },
+                                                        {
+                                                            "type": "object",
+                                                            "required": [
+                                                                "category",
+                                                                "author",
+                                                                "tags"
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "data"
+                                            ]
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "data": {
+                                                    "type": "null"
+                                                }
+                                            },
+                                            "required": [
+                                                "data"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 42,
+                                        "title": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438 \u043f\u043e\u0440\u0442\u0430\u043b\u0430",
+                                        "excerpt": "\u041a\u0440\u0430\u0442\u043a\u043e\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438.",
+                                        "slug": "portal-news",
+                                        "image": null,
+                                        "views": 15,
+                                        "is_featured": false,
+                                        "published_at": "2026-01-15T09:30:00+00:00",
+                                        "category": {
+                                            "id": 2,
+                                            "name": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438",
+                                            "translations": {
+                                                "tm": "T\u00e4zelikler",
+                                                "ru": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438"
+                                            },
+                                            "slug": "news",
+                                            "sort_order": 1
+                                        },
+                                        "author": {
+                                            "id": 3,
+                                            "name": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440",
+                                            "avatar": null
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/articles/{slug}": {
+            "get": {
+                "operationId": "article.show",
+                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u043e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043d\u043d\u0443\u044e \u043d\u043e\u0432\u043e\u0441\u0442\u044c \u043f\u043e slug, \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438, \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044e, \u0430\u0432\u0442\u043e\u0440\u0430 \u0438 \u0442\u0435\u0433\u0438. \u041f\u0440\u0438 \u0437\u0430\u043f\u0440\u043e\u0441\u0435 \u0443\u0432\u0435\u043b\u0438\u0447\u0438\u0432\u0430\u0435\u0442 \u0441\u0447\u0451\u0442\u0447\u0438\u043a \u043f\u0440\u043e\u0441\u043c\u043e\u0442\u0440\u043e\u0432.",
+                "summary": "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u043d\u043e\u0432\u043e\u0441\u0442\u044c",
+                "tags": [
+                    "Articles"
+                ],
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "portal-news"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`ArticleDetailResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/ArticleDetailResource"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "required": [
+                                                        "category",
+                                                        "author",
+                                                        "tags"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 42,
+                                        "title": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438 \u043f\u043e\u0440\u0442\u0430\u043b\u0430",
+                                        "excerpt": "\u041a\u0440\u0430\u0442\u043a\u043e\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438.",
+                                        "slug": "portal-news",
+                                        "image": null,
+                                        "views": 15,
+                                        "is_featured": false,
+                                        "published_at": "2026-01-15T09:30:00+00:00",
+                                        "category": {
+                                            "id": 2,
+                                            "name": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438",
+                                            "translations": {
+                                                "tm": "T\u00e4zelikler",
+                                                "ru": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438"
+                                            },
+                                            "slug": "news",
+                                            "sort_order": 1
+                                        },
+                                        "author": {
+                                            "id": 3,
+                                            "name": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440",
+                                            "avatar": null
+                                        },
+                                        "content": "\u041f\u043e\u043b\u043d\u044b\u0439 \u0442\u0435\u043a\u0441\u0442 \u043d\u043e\u0432\u043e\u0441\u0442\u0438.",
+                                        "comments_count": 2,
+                                        "tags": [],
+                                        "related_articles": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "\u041e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043d\u043d\u0430\u044f \u043d\u043e\u0432\u043e\u0441\u0442\u044c \u0441 \u0442\u0430\u043a\u0438\u043c slug \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430."
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/auth/login": {
+            "post": {
+                "operationId": "auth.login",
+                "description": "\u0421\u043e\u0432\u043c\u0435\u0441\u0442\u0438\u043c\u044b\u0439 \u043c\u0430\u0440\u0448\u0440\u0443\u0442, \u0432\u044b\u043f\u043e\u043b\u043d\u044f\u044e\u0449\u0438\u0439 \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 OTP \u043a\u0430\u043a auth/verify-otp. \u041b\u0438\u043c\u0438\u0442 \u2014 10 \u0437\u0430\u043f\u0440\u043e\u0441\u043e\u0432 \u0432 \u043c\u0438\u043d\u0443\u0442\u0443.",
+                "summary": "\u0412\u0445\u043e\u0434 \u043f\u043e OTP",
+                "tags": [
+                    "Auth"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "const": "\u00dcst\u00fcnlikli girildi."
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/AuthUserResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "token",
+                                        "user"
+                                    ]
+                                },
+                                "example": {
+                                    "message": "\u0412\u0445\u043e\u0434 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d.",
+                                    "token": "example-sanctum-token",
+                                    "user": {
+                                        "id": 3,
+                                        "name": "\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0447\u0438\u0442\u0430\u0442\u0435\u043b\u044c",
+                                        "phone": "+99360000000",
+                                        "email": null,
+                                        "avatar": null,
+                                        "role": "reader"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "const": "N\u00e4dogry tassyklama kody \u00fda-da m\u00f6hleti gutaran."
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/auth/register": {
+            "post": {
+                "operationId": "auth.register",
+                "description": "\u0421\u043e\u0432\u043c\u0435\u0441\u0442\u0438\u043c\u044b\u0439 \u043c\u0430\u0440\u0448\u0440\u0443\u0442, \u0432\u044b\u043f\u043e\u043b\u043d\u044f\u044e\u0449\u0438\u0439 \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 OTP \u0438 \u043f\u0440\u0438 \u043d\u0435\u043e\u0431\u0445\u043e\u0434\u0438\u043c\u043e\u0441\u0442\u0438 \u0441\u043e\u0437\u0434\u0430\u044e\u0449\u0438\u0439 \u0447\u0438\u0442\u0430\u0442\u0435\u043b\u044f. \u041b\u0438\u043c\u0438\u0442 \u2014 10 \u0437\u0430\u043f\u0440\u043e\u0441\u043e\u0432 \u0432 \u043c\u0438\u043d\u0443\u0442\u0443.",
+                "summary": "\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f \u043f\u043e OTP",
+                "tags": [
+                    "Auth"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "const": "\u00dcst\u00fcnlikli girildi."
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/AuthUserResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "token",
+                                        "user"
+                                    ]
+                                },
+                                "example": {
+                                    "message": "\u0412\u0445\u043e\u0434 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d.",
+                                    "token": "example-sanctum-token",
+                                    "user": {
+                                        "id": 3,
+                                        "name": "\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0447\u0438\u0442\u0430\u0442\u0435\u043b\u044c",
+                                        "phone": "+99360000000",
+                                        "email": null,
+                                        "avatar": null,
+                                        "role": "reader"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "const": "N\u00e4dogry tassyklama kody \u00fda-da m\u00f6hleti gutaran."
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/auth/send-otp": {
+            "post": {
+                "operationId": "auth.sendOtp",
+                "description": "\u041e\u0442\u043f\u0440\u0430\u0432\u043b\u044f\u0435\u0442 \u043a\u043e\u0434 \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0438\u044f \u0434\u043b\u044f \u0438\u043c\u0435\u043d\u0438. \u041a\u043e\u0434 \u0432\u043a\u043b\u044e\u0447\u0451\u043d \u0432 \u043e\u0442\u0432\u0435\u0442 \u0434\u043b\u044f \u0442\u0435\u0441\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f \u0438 \u0438\u0441\u0442\u0435\u043a\u0430\u0435\u0442 \u0447\u0435\u0440\u0435\u0437 10 \u043c\u0438\u043d\u0443\u0442; \u043b\u0438\u043c\u0438\u0442 \u2014 10 \u0437\u0430\u043f\u0440\u043e\u0441\u043e\u0432 \u0432 \u043c\u0438\u043d\u0443\u0442\u0443.",
+                "summary": "\u0417\u0430\u043f\u0440\u043e\u0441\u0438\u0442\u044c OTP-\u043a\u043e\u0434",
+                "tags": [
+                    "Auth"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "phone": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 25
+                                    }
+                                },
+                                "required": [
+                                    "name"
+                                ]
+                            },
+                            "example": {
+                                "name": "\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0447\u0438\u0442\u0430\u0442\u0435\u043b\u044c",
+                                "phone": "+99360000000"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Tassyklama kody ugradyldy."
+                                        },
+                                        "code": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "description": "Displayed because this is a test site"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "code",
+                                        "name"
+                                    ]
+                                },
+                                "example": {
+                                    "message": "\u041a\u043e\u0434 \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0438\u044f \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d.",
+                                    "code": "1234",
+                                    "name": "\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0447\u0438\u0442\u0430\u0442\u0435\u043b\u044c"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "const": "\u00ddygy-\u00fdygydan synany\u015fyk edildi. So\u0148rak synany\u015fy\u0148."
+                                        },
+                                        "retry_after": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "retry_after"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "\u041d\u0435\u043a\u043e\u0440\u0440\u0435\u043a\u0442\u043d\u044b\u0435 \u043f\u043e\u043b\u044f name \u0438\u043b\u0438 phone."
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/auth/verify-otp": {
+            "post": {
+                "operationId": "auth.verifyOtp",
+                "description": "\u041f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u0442 OTP, \u043f\u0440\u0438 \u043d\u0435\u043e\u0431\u0445\u043e\u0434\u0438\u043c\u043e\u0441\u0442\u0438 \u0441\u043e\u0437\u0434\u0430\u0451\u0442 \u0447\u0438\u0442\u0430\u0442\u0435\u043b\u044f \u0438 \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 Sanctum token. \u041b\u0438\u043c\u0438\u0442 \u2014 20 \u0437\u0430\u043f\u0440\u043e\u0441\u043e\u0432 \u0432 \u043c\u0438\u043d\u0443\u0442\u0443.",
+                "summary": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c OTP-\u043a\u043e\u0434",
+                "tags": [
+                    "Auth"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "code": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 25
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "code"
+                                ]
+                            },
+                            "example": {
+                                "name": "\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0447\u0438\u0442\u0430\u0442\u0435\u043b\u044c",
+                                "code": "1234",
+                                "phone": "+99360000000"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "const": "\u00dcst\u00fcnlikli girildi."
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/AuthUserResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "token",
+                                        "user"
+                                    ]
+                                },
+                                "example": {
+                                    "message": "\u0412\u0445\u043e\u0434 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d.",
+                                    "token": "example-sanctum-token",
+                                    "user": {
+                                        "id": 3,
+                                        "name": "\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0447\u0438\u0442\u0430\u0442\u0435\u043b\u044c",
+                                        "phone": "+99360000000",
+                                        "email": null,
+                                        "avatar": null,
+                                        "role": "reader"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/auth/logout": {
+            "post": {
+                "operationId": "auth.logout",
+                "description": "\u0423\u0434\u0430\u043b\u044f\u0435\u0442 \u0442\u0435\u043a\u0443\u0449\u0438\u0439 Sanctum token.",
+                "summary": "\u0412\u044b\u0445\u043e\u0434",
+                "tags": [
+                    "Auth"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "const": "\u00dcst\u00fcnlikli \u00e7ykyldy."
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                },
+                                "example": {
+                                    "message": "\u0412\u044b\u0445\u043e\u0434 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d."
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "\u0422\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044f Sanctum bearer token."
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/me": {
+            "get": {
+                "operationId": "auth.me",
+                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f, \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u043e\u0433\u043e \u0441 \u0442\u0435\u043a\u0443\u0449\u0438\u043c Sanctum token.",
+                "summary": "\u0422\u0435\u043a\u0443\u0449\u0438\u0439 \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044c",
+                "tags": [
+                    "Auth"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`AuthUserResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/AuthUserResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 3,
+                                        "name": "\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0447\u0438\u0442\u0430\u0442\u0435\u043b\u044c",
+                                        "phone": "+99360000000",
+                                        "email": null,
+                                        "avatar": null,
+                                        "role": "reader"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "\u0422\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044f Sanctum bearer token."
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/banners": {
+            "get": {
+                "operationId": "banner.index",
+                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0435 \u0431\u0430\u043d\u043d\u0435\u0440\u044b.",
+                "summary": "\u0410\u043a\u0442\u0438\u0432\u043d\u044b\u0435 \u0431\u0430\u043d\u043d\u0435\u0440\u044b",
+                "tags": [
+                    "Banners"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `BannerResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/BannerResource"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "title": "\u0411\u0430\u043d\u043d\u0435\u0440 \u043f\u043e\u0440\u0442\u0430\u043b\u0430",
+                                            "image": null,
+                                            "link": "https://example.test",
+                                            "sort_order": 1
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/categories": {
+            "get": {
+                "operationId": "category.index",
+                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438 \u0432 \u043f\u043e\u0440\u044f\u0434\u043a\u0435 sort_order \u0441 \u0438\u043c\u0435\u043d\u0435\u043c \u0434\u043b\u044f \u0432\u044b\u0431\u0440\u0430\u043d\u043d\u043e\u0433\u043e \u044f\u0437\u044b\u043a\u0430 \u0438 \u0432\u0441\u0435\u043c\u0438 \u043f\u0435\u0440\u0435\u0432\u043e\u0434\u0430\u043c\u0438.",
+                "summary": "\u0421\u043f\u0438\u0441\u043e\u043a \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0439",
+                "tags": [
+                    "Categories"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `CategoryResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CategoryResource"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 2,
+                                            "name": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438",
+                                            "translations": {
+                                                "tm": "T\u00e4zelikler",
+                                                "ru": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438",
+                                                "en": "News"
+                                            },
+                                            "slug": "news",
+                                            "sort_order": 1
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/categories/{slug}/articles": {
+            "get": {
+                "operationId": "category.articles",
+                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u043e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043d\u043d\u044b\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438 \u043f\u043e slug \u0441 \u043f\u0430\u0433\u0438\u043d\u0430\u0446\u0438\u0435\u0439. limit \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0435\u043d 1\u201320, \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e 12.",
+                "summary": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438",
+                "tags": [
+                    "Categories"
+                ],
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "news"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "\u041d\u043e\u043c\u0435\u0440 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u044b \u043f\u0430\u0433\u0438\u043d\u0430\u0446\u0438\u0438.",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u044d\u043b\u0435\u043c\u0435\u043d\u0442\u043e\u0432 \u043d\u0430 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435, \u043e\u0442 1 \u0434\u043e 20; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e 12.",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 12
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `ArticleListResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ArticleListResource"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 42,
+                                            "title": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438 \u043f\u043e\u0440\u0442\u0430\u043b\u0430",
+                                            "excerpt": "\u041a\u0440\u0430\u0442\u043a\u043e\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438.",
+                                            "slug": "portal-news",
+                                            "image": null,
+                                            "views": 15,
+                                            "is_featured": false,
+                                            "published_at": "2026-01-15T09:30:00+00:00",
+                                            "category": {
+                                                "id": 2,
+                                                "name": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438",
+                                                "translations": {
+                                                    "tm": "T\u00e4zelikler",
+                                                    "ru": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438"
+                                                },
+                                                "slug": "news",
+                                                "sort_order": 1
+                                            },
+                                            "author": {
+                                                "id": 3,
+                                                "name": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440",
+                                                "avatar": null
+                                            }
+                                        }
+                                    ],
+                                    "meta": {
+                                        "current_page": 1,
+                                        "last_page": 1,
+                                        "per_page": 12,
+                                        "total": 1,
+                                        "from": 1,
+                                        "to": 1,
+                                        "path": "http://localhost/api/v1/articles"
+                                    },
+                                    "links": {
+                                        "first": "http://localhost/api/v1/categories/news/articles?page=1",
+                                        "last": "http://localhost/api/v1/categories/news/articles?page=1",
+                                        "prev": null,
+                                        "next": null
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f \u0441 \u0442\u0430\u043a\u0438\u043c slug \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430."
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/categories/{slug}/popular": {
+            "get": {
+                "operationId": "category.popularArticles",
+                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u043e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043d\u043d\u044b\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438 \u043f\u043e slug, \u043e\u0442\u0441\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0435 \u043f\u043e \u043f\u0440\u043e\u0441\u043c\u043e\u0442\u0440\u0430\u043c, \u0441 \u043f\u0430\u0433\u0438\u043d\u0430\u0446\u0438\u0435\u0439.",
+                "summary": "\u041f\u043e\u043f\u0443\u043b\u044f\u0440\u043d\u044b\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438",
+                "tags": [
+                    "Categories"
+                ],
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "news"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "\u041d\u043e\u043c\u0435\u0440 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u044b \u043f\u0430\u0433\u0438\u043d\u0430\u0446\u0438\u0438.",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u044d\u043b\u0435\u043c\u0435\u043d\u0442\u043e\u0432 \u043d\u0430 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435, \u043e\u0442 1 \u0434\u043e 20; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e 12.",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 12
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `ArticleListResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ArticleListResource"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 42,
+                                            "title": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438 \u043f\u043e\u0440\u0442\u0430\u043b\u0430",
+                                            "excerpt": "\u041a\u0440\u0430\u0442\u043a\u043e\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438.",
+                                            "slug": "portal-news",
+                                            "image": null,
+                                            "views": 15,
+                                            "is_featured": false,
+                                            "published_at": "2026-01-15T09:30:00+00:00",
+                                            "category": {
+                                                "id": 2,
+                                                "name": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438",
+                                                "translations": {
+                                                    "tm": "T\u00e4zelikler",
+                                                    "ru": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438"
+                                                },
+                                                "slug": "news",
+                                                "sort_order": 1
+                                            },
+                                            "author": {
+                                                "id": 3,
+                                                "name": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440",
+                                                "avatar": null
+                                            }
+                                        }
+                                    ],
+                                    "meta": {
+                                        "current_page": 1,
+                                        "last_page": 1,
+                                        "per_page": 12,
+                                        "total": 1,
+                                        "from": 1,
+                                        "to": 1,
+                                        "path": "http://localhost/api/v1/articles"
+                                    },
+                                    "links": {
+                                        "first": "http://localhost/api/v1/categories/news/popular?page=1",
+                                        "last": "http://localhost/api/v1/categories/news/popular?page=1",
+                                        "prev": null,
+                                        "next": null
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f \u0441 \u0442\u0430\u043a\u0438\u043c slug \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430."
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/v1/articles/{slug}/comments": {
+            "get": {
+                "operationId": "comment.index",
+                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e \u043e\u0434\u043e\u0431\u0440\u0435\u043d\u043d\u044b\u0435 \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0438, \u043f\u043e 10 \u043d\u0430 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435.",
+                "summary": "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0438 \u043a \u043d\u043e\u0432\u043e\u0441\u0442\u0438",
+                "tags": [
+                    "Comments"
+                ],
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "portal-news"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "\u041d\u043e\u043c\u0435\u0440 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u044b \u043f\u0430\u0433\u0438\u043d\u0430\u0446\u0438\u0438.",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `CommentResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CommentResource"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                },
+                                "example": {
+                                    "data": [],
+                                    "meta": {
+                                        "current_page": 1,
+                                        "last_page": 1,
+                                        "per_page": 10,
+                                        "total": 0,
+                                        "from": null,
+                                        "to": null,
+                                        "path": "http://localhost/api/v1/articles"
+                                    },
+                                    "links": {
+                                        "first": "http://localhost/api/v1/articles/portal-news/comments?page=1",
+                                        "last": "http://localhost/api/v1/articles/portal-news/comments?page=1",
+                                        "prev": null,
+                                        "next": null
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "\u041e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043d\u043d\u0430\u044f \u043d\u043e\u0432\u043e\u0441\u0442\u044c \u0441 \u0442\u0430\u043a\u0438\u043c slug \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430."
+                    }
+                },
+                "security": []
+            },
+            "post": {
+                "operationId": "comment.store",
+                "description": "\u0421\u043e\u0437\u0434\u0430\u0451\u0442 \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u0441\u043e \u0441\u0442\u0430\u0442\u0443\u0441\u043e\u043c pending \u0434\u043b\u044f \u0430\u0432\u0442\u043e\u0440\u0438\u0437\u043e\u0432\u0430\u043d\u043d\u043e\u0433\u043e \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f; \u043f\u0443\u0431\u043b\u0438\u043a\u0430\u0446\u0438\u044f \u043e\u0436\u0438\u0434\u0430\u0435\u0442 \u043c\u043e\u0434\u0435\u0440\u0430\u0446\u0438\u0438. \u041e\u0433\u0440\u0430\u043d\u0438\u0447\u0435\u043d\u0438\u0435: 5 \u0437\u0430\u043f\u0440\u043e\u0441\u043e\u0432 \u0432 \u043c\u0438\u043d\u0443\u0442\u0443.",
+                "summary": "\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439",
+                "tags": [
+                    "Comments"
+                ],
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "portal-news"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "body": {
+                                        "type": "string",
+                                        "maxLength": 1000
+                                    }
+                                },
+                                "required": [
+                                    "body"
+                                ]
+                            },
+                            "example": {
+                                "body": "\u0421\u043f\u0430\u0441\u0438\u0431\u043e \u0437\u0430 \u043d\u043e\u0432\u043e\u0441\u0442\u044c!"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Teswiri\u0148iz barlag \u00fc\u00e7in ugradyldy."
+                                        },
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/CommentResource"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "required": [
+                                                        "user"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "data"
+                                    ]
+                                },
+                                "example": {
+                                    "message": "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d \u043d\u0430 \u043c\u043e\u0434\u0435\u0440\u0430\u0446\u0438\u044e.",
+                                    "data": {
+                                        "id": 10,
+                                        "body": "\u0421\u043f\u0430\u0441\u0438\u0431\u043e \u0437\u0430 \u043d\u043e\u0432\u043e\u0441\u0442\u044c!",
+                                        "status": "pending",
+                                        "created_at": "2026-01-15T09:30:00+00:00",
+                                        "user": {
+                                            "id": 3,
+                                            "name": "\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0447\u0438\u0442\u0430\u0442\u0435\u043b\u044c",
+                                            "avatar": null
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "\u041f\u043e\u043b\u0435 body \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e \u0438 \u0434\u043e\u043b\u0436\u043d\u043e \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u0442\u044c \u043d\u0435 \u0431\u043e\u043b\u0435\u0435 1000 \u0441\u0438\u043c\u0432\u043e\u043b\u043e\u0432."
+                    },
+                    "401": {
+                        "description": "\u0422\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044f Sanctum bearer token."
+                    },
+                    "404": {
+                        "description": "\u041e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043d\u043d\u0430\u044f \u043d\u043e\u0432\u043e\u0441\u0442\u044c \u0441 \u0442\u0430\u043a\u0438\u043c slug \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430."
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/me": {
+            "get": {
+                "operationId": "profile.show",
+                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 id, name \u0438 avatar \u0442\u0435\u043a\u0443\u0449\u0435\u0433\u043e \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f.",
+                "summary": "\u041f\u0440\u043e\u0444\u0438\u043b\u044c \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f",
+                "tags": [
+                    "Auth"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`UserResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 3,
+                                        "name": "\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0447\u0438\u0442\u0430\u0442\u0435\u043b\u044c",
+                                        "avatar": null
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "\u0422\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044f Sanctum bearer token."
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "operationId": "profile.update",
+                "description": "\u0427\u0430\u0441\u0442\u0438\u0447\u043d\u043e \u043e\u0431\u043d\u043e\u0432\u043b\u044f\u0435\u0442 \u043f\u0440\u043e\u0444\u0438\u043b\u044c. \u041f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f name, email, phone, password \u0441 password_confirmation \u0438 avatar (jpg, jpeg, png, webp, \u0434\u043e 2 \u041c\u0411); avatar=null \u0443\u0434\u0430\u043b\u044f\u0435\u0442 \u0430\u0432\u0430\u0442\u0430\u0440.",
+                "summary": "\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c \u043f\u0440\u043e\u0444\u0438\u043b\u044c",
+                "tags": [
+                    "Auth"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maxLength": 255
+                                    },
+                                    "phone": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 20
+                                    },
+                                    "password": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "minLength": 8
+                                    },
+                                    "avatar": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "format": "binary",
+                                        "contentMediaType": "application/octet-stream",
+                                        "description": "Maximum file size: 2048 kilobytes."
+                                    },
+                                    "password_confirmation": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "minLength": 8
+                                    }
+                                }
+                            },
+                            "example": {
+                                "name": "\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0447\u0438\u0442\u0430\u0442\u0435\u043b\u044c"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "`UserResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 3,
+                                        "name": "\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0447\u0438\u0442\u0430\u0442\u0435\u043b\u044c",
+                                        "avatar": null
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "\u041f\u043e\u043b\u044f \u043d\u0435 \u043f\u0440\u043e\u0448\u043b\u0438 \u0432\u0430\u043b\u0438\u0434\u0430\u0446\u0438\u044e."
+                    },
+                    "401": {
+                        "description": "\u0422\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044f Sanctum bearer token."
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tags": {
+            "get": {
+                "operationId": "tag.index",
+                "description": "\u0412\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442 \u0442\u0435\u0433\u0438 \u0432 \u043f\u043e\u0440\u044f\u0434\u043a\u0435 id.",
+                "summary": "\u0421\u043f\u0438\u0441\u043e\u043a \u0442\u0435\u0433\u043e\u0432",
+                "tags": [
+                    "Categories"
+                ],
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u044b\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u043e\u0442\u0432\u0435\u0442\u0430.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "application/json"
+                            ]
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "X-Locale",
+                        "in": "header",
+                        "description": "\u042f\u0437\u044b\u043a \u043e\u0442\u0432\u0435\u0442\u0430. \u0422\u0430\u043a\u0436\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f `?lang=` \u0438 `Accept-Language`; \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e `tm`.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "tm",
+                                "ru",
+                                "en"
+                            ]
+                        },
+                        "example": "tm"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `TagResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/TagResource"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 5,
+                                            "name": "\u041e\u0431\u0449\u0435\u0441\u0442\u0432\u043e",
+                                            "slug": "society"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "description": "\u0422\u043e\u043a\u0435\u043d Sanctum, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043d\u044b\u0439 \u0447\u0435\u0440\u0435\u0437 OTP.",
+                "scheme": "bearer"
+            }
+        },
+        "schemas": {
+            "ArticleDetailResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "array",
+                        "items": {}
+                    },
+                    "content": {
+                        "type": "array",
+                        "items": {}
+                    },
+                    "excerpt": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {}
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "views": {
+                        "type": "integer"
+                    },
+                    "is_featured": {
+                        "type": "boolean"
+                    },
+                    "published_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "comments_count": {
+                        "type": "integer"
+                    },
+                    "category": {
+                        "$ref": "#/components/schemas/CategoryResource"
+                    },
+                    "author": {
+                        "$ref": "#/components/schemas/UserResource"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TagResource"
+                        }
+                    },
+                    "related_articles": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArticleListResource"
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "content",
+                    "excerpt",
+                    "slug",
+                    "image",
+                    "views",
+                    "is_featured",
+                    "published_at"
+                ],
+                "title": "ArticleDetailResource"
+            },
+            "ArticleListResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "array",
+                        "items": {}
+                    },
+                    "excerpt": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {}
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "views": {
+                        "type": "integer"
+                    },
+                    "is_featured": {
+                        "type": "boolean"
+                    },
+                    "published_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "comments_count": {
+                        "type": "integer"
+                    },
+                    "category": {
+                        "$ref": "#/components/schemas/CategoryResource"
+                    },
+                    "author": {
+                        "$ref": "#/components/schemas/UserResource"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "excerpt",
+                    "slug",
+                    "image",
+                    "views",
+                    "is_featured",
+                    "published_at"
+                ],
+                "title": "ArticleListResource"
+            },
+            "AuthUserResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "email": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "avatar": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "role": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "phone",
+                    "email",
+                    "avatar",
+                    "role"
+                ],
+                "title": "AuthUserResource"
+            },
+            "BannerResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "link": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "sort_order": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "image",
+                    "link",
+                    "sort_order"
+                ],
+                "title": "BannerResource"
+            },
+            "CategoryResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {},
+                    "translations": {
+                        "type": "array",
+                        "items": {}
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "sort_order": {
+                        "type": "integer"
+                    },
+                    "articles_count": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "translations",
+                    "slug",
+                    "sort_order"
+                ],
+                "title": "CategoryResource"
+            },
+            "CommentResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "body": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/UserResource"
+                    }
+                },
+                "required": [
+                    "id",
+                    "body",
+                    "status",
+                    "created_at"
+                ],
+                "title": "CommentResource"
+            },
+            "TagResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "array",
+                        "items": {}
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "articles_count": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "slug"
+                ],
+                "title": "TagResource"
+            },
+            "UserResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "avatar": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "avatar"
+                ],
+                "title": "UserResource"
+            }
+        },
+        "responses": {
+            "ValidationException": {
+                "description": "Validation error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Errors overview."
+                                },
+                                "errors": {
+                                    "type": "object",
+                                    "description": "A detailed description of each field that failed validation.",
+                                    "additionalProperties": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "required": [
+                                "message",
+                                "errors"
+                            ]
+                        }
+                    }
+                }
+            },
+            "AuthenticationException": {
+                "description": "Unauthenticated",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Error overview."
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

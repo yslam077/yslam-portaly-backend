@@ -1,0 +1,24 @@
+meta {
+  name: Create comment
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{baseUrl}}/api/v1/articles/{{articleSlug}}/comments
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  X-Locale: {{locale}}
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  "body": "A sample comment."
+}

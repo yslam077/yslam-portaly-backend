@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
-    // Вход (только для гостей)
     Route::middleware('guest')->group(function () {
         Route::get('login', [AuthController::class, 'showLogin'])->name('login');
         Route::post('login', [AuthController::class, 'loginWithPassword'])->name('login.submit');
@@ -20,9 +19,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-    // Только сотрудники
     Route::middleware(['auth', 'staff'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::view('api-docs', 'admin.api-docs')->name('api-docs');
 
         // Новости: модератор сюда не заходит
         Route::middleware('role:admin,editor,author')->group(function () {

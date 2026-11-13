@@ -2,9 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin Article */
 class ArticleDetailResource extends JsonResource
 {
     protected $related = null;
@@ -29,7 +31,7 @@ class ArticleDetailResource extends JsonResource
             'content' => $this->content,
             'excerpt' => $this->excerpt,
             'slug' => $this->slug,
-            'image' => $this->image ? asset('storage/' . $this->image) : null,
+            'image' => $this->image ? asset('storage/'.$this->image) : null,
             'views' => $this->views,
             'is_featured' => $this->is_featured,
             'published_at' => $this->published_at?->toIso8601String(),

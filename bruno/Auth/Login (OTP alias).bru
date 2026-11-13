@@ -1,0 +1,21 @@
+meta {
+  name: Login (OTP alias)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/v1/auth/login
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  X-Locale: {{locale}}
+}
+
+body:json {
+  "name": "Example Reader",
+  "code": "{{otpCode}}"
+}

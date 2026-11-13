@@ -1,0 +1,24 @@
+meta {
+  name: Update profile
+  type: http
+  seq: 20
+}
+
+put {
+  url: {{baseUrl}}/api/v1/me
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  X-Locale: {{locale}}
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  "name": "Updated Reader"
+}

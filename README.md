@@ -53,6 +53,13 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
+## API документация и Bruno
+
+- Откройте интерактивную документацию API в браузере: `/docs/api`. OpenAPI JSON доступен по `/docs/api.json`.
+- Чтобы импортировать спецификацию в Bruno, выберите **Import Collection → OpenAPI** и укажите `bruno/openapi.json` (или URL `/docs/api.json`).
+- Чтобы открыть готовую коллекцию, выберите **Open Collection** и укажите папку `bruno`.
+- В Bruno выберите окружение `local` или `production`, установите `baseUrl`, затем выполните **Auth → Send OTP** и **Auth → Verify OTP**. Токен сохраняется в переменную `token` и используется защищёнными запросами.
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

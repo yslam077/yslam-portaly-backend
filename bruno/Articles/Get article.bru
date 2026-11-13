@@ -1,0 +1,16 @@
+meta {
+  name: Get article
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/api/v1/articles/{{articleSlug}}
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  X-Locale: {{locale}}
+}

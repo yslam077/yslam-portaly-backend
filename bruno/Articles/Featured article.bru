@@ -1,0 +1,16 @@
+meta {
+  name: Featured article
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/v1/articles/featured
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  X-Locale: {{locale}}
+}

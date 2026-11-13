@@ -285,6 +285,12 @@
                 Dashboard
             </a>
 
+            <a href="{{ route('admin.api-docs') }}"
+               class="nav-link {{ request()->routeIs('admin.api-docs') ? 'active' : '' }}">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>
+                API docs
+            </a>
+
             @if(in_array(auth()->user()->role, ['admin', 'editor', 'author']))
             <div class="sidebar-label">Mazmun</div>
             <a href="{{ route('admin.articles.index') }}"

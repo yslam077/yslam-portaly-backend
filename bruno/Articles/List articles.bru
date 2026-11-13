@@ -1,0 +1,16 @@
+meta {
+  name: List articles
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/v1/articles?limit=12&lang={{locale}}
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  X-Locale: {{locale}}
+}

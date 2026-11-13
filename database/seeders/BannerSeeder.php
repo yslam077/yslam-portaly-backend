@@ -14,30 +14,30 @@ class BannerSeeder extends Seeder
     {
         $banners = [
             [
-                'title' => 'Yslam Portaly — Ähli täzelikler bir ýerde',
+                'title' => 'Aşgabat we jemgyýetçilik durmuşy',
                 'image' => 'banners/banner-1.jpg',
-                'link' => '/category/sport',
+                'link' => '/category/jemgyyet',
                 'sort_order' => 1,
                 'is_active' => true,
             ],
             [
-                'title' => 'Sport älemindäki iň soňky habarlar we netijeler',
+                'title' => 'Sport we sagdyn durmuş',
                 'image' => 'banners/banner-2.jpg',
                 'link' => '/category/sport',
                 'sort_order' => 2,
                 'is_active' => true,
             ],
             [
-                'title' => 'Ykdysadyýet we Biznes dünýäsindäki ösüşler',
+                'title' => 'Türkmen halyçylyk sungaty we medeni miras',
                 'image' => 'banners/banner-3.jpg',
-                'link' => '/category/biznes',
+                'link' => '/category/kultura',
                 'sort_order' => 3,
                 'is_active' => true,
             ],
             [
-                'title' => 'Dünýä we Syýasat täzelikleri',
+                'title' => 'Hazar deňzi we syýahatçylyk',
                 'image' => 'banners/banner-4.jpg',
-                'link' => '/category/dunya',
+                'link' => '/category/syahatcylyk',
                 'sort_order' => 4,
                 'is_active' => true,
             ],
